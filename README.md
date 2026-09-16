@@ -1,8 +1,8 @@
-# Ocean Satellite Wave Separation
+# Deep Learning for Source Separation in SWOT Satellite Altimetry
 
-Deep learning experiments for separating Rossby-wave structure from synthetic internal-wave contamination in sea-surface-height data sampled along SWOT satellite swaths. The workflow combines physical wave modeling, spatial projection, and convolutional reconstruction.
+Deep learning experiments for separating Rossby-wave structure from synthetic internal-wave contamination in sea-surface-height data sampled along SWOT satellite swaths. The workflow combines physical wave modeling, spatial projection, and denoising autoencoder experiments, comparing input dimensions and representations for source separation.
 
-Developed during an international summer research internship at Scripps Institution of Oceanography, UC San Diego, with Prof. Sarah Gille.
+Developed during the International Summer Research Program at Scripps Institution of Oceanography, UC San Diego, with Prof. Sarah Gille (July-August 2024).
 
 **Technologies:** TensorFlow/Keras, NumPy, SciPy, xarray, NetCDF, Matplotlib.
 
