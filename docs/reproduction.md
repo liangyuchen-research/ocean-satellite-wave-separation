@@ -1,62 +1,64 @@
 # Reproduction guide
 
-## Working directories
+## Maintained model workflow
 
-Start Jupyter from the repository root. The bootstrap cell finds the repository
-from any notebook subdirectory and adds `src/` to the import path. File access
-searches generated preprocessing artifacts first, then `data/`. Inputs can be
-provided through `OCEAN_DATA_DIR`; `OCEAN_ARTIFACT_DIR` controls generated outputs.
+Start Jupyter from the repository root or a notebook subdirectory. The bootstrap
+finds `src/project_paths.py`, without using a machine-specific location.
+`OCEAN_DATA_DIR` overrides `data/`. `OCEAN_ARTIFACT_DIR` overrides `artifacts/`;
+model outputs use a separate subdirectory per notebook.
 
-Use a separate environment and the requirements files. The model dependency list
-is sufficient for the model notebooks. The preprocessing list additionally
-includes NetCDF, Cartopy, spectral plotting and parallel-array tools. Dependency
-versions were not captured in the original notebooks. Model checkpoints identify
-Keras 2.6.0, which should be considered when reconstructing the historical runtime.
-
-## Model-only route with preserved derived data
-
-1. Restore `new2_ssh_training_data.nc` and `new2_ssh_testing_data.nc` into `data/`.
-2. Verify their hashes against `data/artifact-manifest.json`.
+1. Install `requirements-models.txt` in a separate Python 3.12 environment.
+2. Restore `new2_ssh_training_data.nc` and `new2_ssh_testing_data.nc` using
+   `scripts/restore_artifacts.py --source /path/to/archive --only canonical`.
 3. Open `notebooks/modeling/05_train_swath_autoencoder.ipynb`.
-4. Inspect the loaded shapes, validation protocol and original 30,000-epoch setting.
-5. Enable `ALLOW_TRAINING` to run the training cell. Outputs go to an experiment-specific
-   directory under `artifacts/models/`.
+4. Review shapes, validation use and the original 30,000-epoch setting.
+5. Set `ALLOW_TRAINING = True` and run the remaining cells.
 
-The original notebook monitors the testing arrays as validation during training.
-This choice is preserved and explicitly documented; it is not a final independent
-test protocol. A fresh experiment should design an appropriate temporal or
-geographic holdout before reporting generalization.
+Restoration verifies SHA-256 hashes and never overwrites a different file.
+Newly trained models use `.keras`. Archived `.h5` checkpoints record Keras 2.6.0
+and are separate from the maintained model-loading route.
 
-## Raw-data route
+For a standalone check with no research data, run
+`python scripts/check_model_notebooks.py --notebook 05_train_swath_autoencoder`.
+The checker creates small synthetic NetCDF inputs in a temporary directory,
+executes every code cell with one epoch and batch size one, and compares saved
+model inference with the in-memory model. Configuration overrides exist only
+in that test run; no notebook or research input is edited.
 
-Run each numbered stage for both training and testing:
+## Experiment inputs
 
-| Stage | Notebook group | Purpose |
-| --- | --- | --- |
-| 1 | `01_fit_rossby_*` | Fit wave coefficients to AVISO anomaly windows |
-| 2 | `02_build_swath_*` | Build the projection matrix at selected SWOT swath locations |
-| 3 | `03_generate_internal_*` | Synthesize internal-wave SSH fields |
-| 4 | `04_project_*` | Project and combine fields into input/target arrays |
-| 5 | `05_train_swath_autoencoder` | Train and inspect Rossby-component reconstruction |
+| Notebook | Input pair |
+| --- | --- |
+| `05_train_swath_autoencoder` | `new2_ssh_*_data.nc` |
+| `small_dataset_flattened_autoencoder` | `ssh_*_data.nc` |
+| `small_dataset_spatial_autoencoder` | `ssh_*_data2D.nc` |
+| `expanded_flattened_autoencoder` | `new_ssh_*_data.nc` |
+| `extended_spatial_autoencoder` | `new2_ssh_*_data2D.nc` |
+| `convolutional_dense_decoder` | `new_ssh_*_data.nc` |
+| `tanh_autoencoder` and `tanh_autoencoder_variant` | `new_ssh_*_data.nc` |
 
-The first three stages can prepare separate prerequisites; stage 4 consumes their
-outputs. The alternative spatial-testing projection is under `notebooks/experiments/`.
+The star denotes separate `training` and `testing` filenames. Each input is
+listed in `data/artifact-manifest.json`. Tanh experiments add random noise to
+the target rather than using the supplied mixed signal, so their noise
+configuration differs from the canonical notebook.
 
-## Missing source dependencies
+## Historical upstream preprocessing
 
-The following source dependencies are required but are not included:
+The original preparation fits Rossby-wave coefficients to AVISO anomalies,
+constructs a SWOT projection matrix, synthesizes internal waves, and combines
+the fields into derived model inputs. Its notebooks remain in the local research
+archive, with source hashes in [notebook-provenance.json](notebook-provenance.json).
+They are outside the maintained executable collection.
 
-- `internal_waves.py`, exposing `SpectralDomain`, `calc_gm_wavenumber_spectra`,
-  `calc_gm_wavenumber_spectra_on_domain`, `make_synthetic_field`, and `abel_integral`.
-- `aviso_tot_MSLA_ccs.mat`, containing `dsave`, `tsave`, `xsave` and `ysave`.
-- `aviso_tot_MSLA_ccs_data.nc`, used by the swath/projection notebooks.
-- `stratification_sample_ccs.nc`, including the vertical-mode structure `Psi`.
+Fresh raw-data reproduction requires four unavailable dependencies:
 
-Their implementations, exact provenance and permissions must come from an
-authorized original source. The local `aviso_msla_ccs_1d.nc` contains an `msla`
-array of shape 104 by 184 by 1,616. The missing MATLAB file is described in code
-as 188 by 108 by 10,016 before transposition; these are not interchangeable.
+- `internal_waves.py`, including `SpectralDomain`, Garrett-Munk spectral helpers,
+  `make_synthetic_field`, and `abel_integral`.
+- `aviso_tot_MSLA_ccs.mat`, with `dsave`, `tsave`, `xsave`, and `ysave`.
+- `aviso_tot_MSLA_ccs_data.nc`, used for swath construction and projection.
+- `stratification_sample_ccs.nc`, including vertical-mode structure `Psi`.
 
-Intermediate Rossby coefficients, swath matrices and internal-wave files are
-generated by these stages and are also absent from the source collection.
-Consequently raw-data-to-model execution is not claimed to be complete.
+These must come from the original scientific source. The available
+`aviso_msla_ccs_1d.nc` has different dimensions and cannot replace the MATLAB
+input. No replacement physics implementation has been inferred from filenames
+or downstream calls.

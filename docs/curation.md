@@ -1,32 +1,47 @@
 # Source and maintenance notes
 
-All 56 original files from the two source collections, including checkpoints,
-NetCDF data, HDF5 models and notebook outputs, were copied unchanged into a local
-preservation archive. Every copy was verified against a SHA-256 manifest. The
-archive is separate from this repository and contains about 444 MB.
+All 56 original files from the two research collections were copied unchanged
+into a separate local archive. Checkpoints, NetCDF data, notebook outputs and
+source files were verified against SHA-256 manifests (approximately 444 MB).
+Before this maintenance pass, all 19 published notebooks were also preserved
+with a separate hash manifest. No original research data was modified.
 
-## Repository changes
+## Maintained model collection
 
-- Renamed notebooks to English descriptions and grouped preprocessing, modeling
-  and alternative experiments.
-- Cleared notebook outputs, execution counts and transient metadata.
-- Preserved English comments and scientific computation logic.
-- Replaced machine-specific paths with repository-relative input/output helpers.
-- Added an explicit training opt-in before long-running training calls.
-- Protected existing generated outputs from silent replacement.
-- Corrected MAE curve labels that were originally marked as MSE.
-- Added the missing training internal-wave export using the testing export schema.
-- Redirected the primary inference export to `swath_inference_results.nc` and
-  corrected its dimension names to `sets`, `days`, `points`.
-- Kept the training-projection notebook's final exploratory cells 15-18 only in
-  the unchanged archive. Those cells read an unavailable scratch file and then
-  overwrite the training dataset with mislabeled variables; they are not part
-  of the canonical preprocessing sequence.
+Eight model notebooks retain their source architectures, numeric hyperparameters
+and validation protocol. Maintenance changes include English names, cleared
+outputs, repository-relative paths, training opt-in and output overwrite guards.
+Explicit float32 channel axes now align inputs and targets across current Keras
+backends. Model export uses `.keras`; the dense-decoder notebook now exports and
+predicts with its actual `model` variable rather than an undefined `autoencoder`.
+Its dense output size is converted to a Python integer. The primary inference
+NetCDF export preserves the named `sets`, `days`, `points` dimension order.
+Input NetCDF handles are closed after reading arrays, allowing clean file
+release on Windows as well as Unix systems.
 
-`notebook-provenance.json` maps each notebook to its original name and
-source hash. Near-duplicate `UCSD-1D-Copy1`, `UCSD-Copy1`, and `new2 UCSD-1D`
-notebooks remain in the local archive. The unrelated MNIST practice notebook
-`Untitled.ipynb` also remains archived rather than being presented as ocean research.
+All eight maintained model notebooks were executed cell by cell using small
+synthetic inputs, one training epoch and batch size one. Model export, reload
+and prediction equality passed with TensorFlow 2.20.0 and Keras 3.15.1.
+`constraints-tested.txt` records the tested Python 3.12 dependency versions.
+These bounded runs verify program execution, not historical model performance.
 
-The preserved `swath_rossby_wave.py` has only whitespace and punctuation cleanup.
-Authorship is not inferred from its presence in a local folder.
+Rossby helpers now exclude masked/NaN observations without trailing zero rows,
+allocate basis columns for every requested vertical mode, and solve regularized
+systems without explicit matrix inversion. Physical units and regularization
+choices were not reinterpreted.
+
+## Historical material
+
+Eight raw preprocessing notebooks and the alternative spatial projection remain
+preserved locally because their full upstream prerequisites are unavailable.
+Two model drafts are also preserved locally: the expanded spatial draft mixes
+Conv2D with a spatial/time rank it does not support, and the adversarial draft
+has unresolved discriminator update/loss behavior. They are not listed as
+runnable examples. No substitute algorithm was invented to replace them.
+
+[notebook-provenance.json](notebook-provenance.json) identifies maintained and
+archived notebooks, original names and source hashes. Near-duplicate notebooks
+and unrelated MNIST practice remain in the original preservation archive.
+
+The numerical helper's authorship is not inferred from its presence in a local
+folder. See [NOTICE.md](../NOTICE.md) for attribution and reuse boundaries.

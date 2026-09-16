@@ -15,9 +15,7 @@ def skill_matrix(MSLA, Psi, k_n, l_n, MModes, Rm, lon, lat, T_time):
     '''
 
     import numpy as np
-    from tqdm import tqdm
     from numpy import linalg as LA
-    from scipy import linalg
 
     Phi0 = lat.mean() # central latitude (φ0)
     Omega = 7.27e-5 # Ω is the angular speed of the earth
@@ -29,6 +27,7 @@ def skill_matrix(MSLA, Psi, k_n, l_n, MModes, Rm, lon, lat, T_time):
     dlat = lat - lat.mean()
 
     SSHA_masked = np.ma.masked_invalid(MSLA)
+    valid = ~np.ma.getmaskarray(SSHA_masked)
     SSHA_vector = np.zeros(MSLA.size)
     time_vector = np.zeros(MSLA.size)
     Iindex, Jindex, Tindex = np.zeros(MSLA.size), np.zeros(MSLA.size), np.zeros(MSLA.size)
@@ -37,7 +36,7 @@ def skill_matrix(MSLA, Psi, k_n, l_n, MModes, Rm, lon, lat, T_time):
     for tt in range(MSLA.shape[2]):
         for jj in range(MSLA.shape[0]):  # loop over latitude
             for ii in range(MSLA.shape[1]):  # loop over longitude
-                if(SSHA_masked[jj, ii, tt] != np.nan):
+                if valid[jj, ii, tt]:
                     SSHA_vector[count] = MSLA[jj, ii, tt]   # MSLA subscripts:  lat, lon, time
                     #lon_vector[count] = lon[jj]
                     #lat_vector[count] = lat[ii]
@@ -45,6 +44,10 @@ def skill_matrix(MSLA, Psi, k_n, l_n, MModes, Rm, lon, lat, T_time):
                     Iindex[count], Jindex[count], Tindex[count] = int(ii), int(jj), int(tt)
                     count = count + 1
 
+    SSHA_vector = SSHA_vector[:count]
+    Iindex, Jindex, Tindex = Iindex[:count], Jindex[:count], Tindex[:count]
+    if count == 0 or not np.any(SSHA_vector):
+        raise ValueError('Skill requires at least one finite, nonzero observation.')
     H0 = np.zeros([len(SSHA_vector), 2]) # Number of data * Number of models
     skill = np.zeros([len(k_n), len(l_n), MModes])
     omega = np.zeros([len(k_n), len(l_n), MModes])
@@ -73,7 +76,7 @@ def skill_matrix(MSLA, Psi, k_n, l_n, MModes, Rm, lon, lat, T_time):
                 for pp in range(M):
                     HTH[pp, pp] = HTH[pp, pp] +  RR/PP
 
-                D = np.matmul(LA.inv(HTH), H0.T)
+                D = LA.solve(HTH, H0.T)
 
                 X_ = np.matmul(D, SSHA_vector)
 
@@ -101,11 +104,20 @@ def inversion(Y, H_v, P_over_R):
     import numpy as np
     from numpy import linalg as LA
 
+    Y = np.asarray(Y, dtype=float)
+    H_v = np.asarray(H_v, dtype=float)
+    penalty = np.asarray(P_over_R, dtype=float)
+    if H_v.ndim != 2 or Y.shape[0] != H_v.shape[0]:
+        raise ValueError('Observations must match the rows of the design matrix.')
+    if penalty.shape != (H_v.shape[1], H_v.shape[1]):
+        raise ValueError('Regularization must be a square matrix in model space.')
+    if not all(np.isfinite(x).all() for x in (Y, H_v, penalty)):
+        raise ValueError('Inversion inputs must contain only finite values.')
     HTH = np.matmul(H_v.T, H_v)
 
-    HTH = HTH +  P_over_R #, P: uncertainty in model, R: uncertainty in data, actually R_over_P
+    HTH = HTH + penalty # P: uncertainty in model; R: uncertainty in data (R over P).
 
-    D = np.matmul(LA.inv(HTH), H_v.T)
+    D = LA.solve(HTH, H_v.T)
 
     amp = np.matmul(D, Y)
 
@@ -141,7 +153,9 @@ def build_h_matrix2(MSLA, MModes, k_n, l_n, longitude, latitude, T_time, Psi, Rm
     dlon = longitude - longitude.mean()
     dlat = latitude - latitude.mean()
     #print('lon',lon.mean(),'lat',lat.mean())
-    M = len(k_n) * len(l_n)
+    M = len(k_n) * len(l_n) * MModes
+    MSLA = np.ma.masked_invalid(MSLA)
+    valid = ~np.ma.getmaskarray(MSLA)
 
     omega = np.zeros([len(k_n), len(l_n), MModes])
     Iindex, Jindex, Tindex = np.zeros(MSLA.size), np.zeros(MSLA.size), np.zeros(MSLA.size)
@@ -152,7 +166,7 @@ def build_h_matrix2(MSLA, MModes, k_n, l_n, longitude, latitude, T_time, Psi, Rm
     for tt in range(MSLA.shape[2]):
         for jj in range(MSLA.shape[0]):
             for ii in range(MSLA.shape[1]):
-                if (MSLA[jj:jj+1,ii,tt].mask==False):
+                if valid[jj, ii, tt]:
                     SSHA_vector[count] = MSLA[jj, ii, tt]
                     day_use[count]=day+tt
                     Iindex[count], Jindex[count], Tindex[count] = int(ii), int(jj), int(tt)
@@ -177,7 +191,7 @@ def build_h_matrix2(MSLA, MModes, k_n, l_n, longitude, latitude, T_time, Psi, Rm
     H_all[:, 0::2] = H_cos
     H_all[:, 1::2] = H_sin
 
-    return H_all, SSHA_vector
+    return H_all, SSHA_vector[:count_max]
 
 def make_error_over_time(days, alpha, latitude_use, longitude_use, deltax_use, asc_des_use):
 # days, alpha, yswath_index_left, yswath_index_right, y_mask_left, y_mask_right):
@@ -264,7 +278,7 @@ def build_hswath_matrix2(MSLA, MModes, k_n, l_n, lon,lat,lon_swath, lat_swath, i
     dlon_swath = lon_swath - lon.mean()
     dlat_swath = lat_swath -lat.mean()
     #print('lon',lon.mean(),'lat',lat.mean())
-    M = len(k_n) * len(l_n)
+    M = len(k_n) * len(l_n) * MModes
 
     omega = np.zeros([len(k_n), len(l_n), MModes])
 #     day_use = np.zeros(MSLA.shape[2])

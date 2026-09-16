@@ -1,6 +1,5 @@
-# Compatibility starting point, not a reproduced historical environment.
-# Archived model metadata records Keras 2.6.0; review version compatibility.
-tensorflow
+# Maintained runtime; archived Keras 2.6 checkpoints are separate.
+tensorflow==2.20.0
 numpy
 scipy
 xarray

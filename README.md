@@ -1,64 +1,92 @@
 # Deep Learning for Source Separation in SWOT Satellite Altimetry
 
-Deep learning experiments for separating Rossby-wave structure from synthetic internal-wave contamination in sea-surface-height data sampled along SWOT satellite swaths. The workflow combines physical wave modeling, spatial projection, and denoising autoencoder experiments, comparing input dimensions and representations for source separation.
+Denoising autoencoder experiments for recovering Rossby-wave structure from
+sea-surface-height fields contaminated by synthetic internal waves. The research
+combines physical wave modeling, projection onto SWOT satellite swaths, and
+convolutional reconstruction in flattened and spatial representations.
 
-Developed during the International Summer Research Program at Scripps Institution of Oceanography, UC San Diego, with Prof. Sarah Gille (July-August 2024).
+Developed during the International Summer Research Program at Scripps Institution
+of Oceanography, UC San Diego, with Prof. Sarah Gille (July-August 2024).
 
-**Technologies:** TensorFlow/Keras, NumPy, SciPy, xarray, NetCDF, Matplotlib.
+**Implementation:** [Main model notebook](notebooks/modeling/05_train_swath_autoencoder.ipynb)
+· [Setup](docs/reproduction.md) · [Data manifest](data/artifact-manifest.json)
 
-## Approach
+**Tools:** TensorFlow/Keras, NumPy, SciPy, xarray, NetCDF, Matplotlib.
+
+## Workflow
 
 ```mermaid
 flowchart LR
-    A[AVISO sea-surface-height anomalies] --> B[Fit Rossby wave coefficients]
-    S[SWOT swath coordinates] --> C[Construct swath projection matrix]
-    B --> D[Project Rossby signal onto swaths]
-    C --> D
-    I[Synthetic internal-wave fields] --> M[Combine signal components]
-    D --> M
-    M --> N[Convolutional reconstruction model]
-    N --> R[Estimated Rossby component]
+    A[Projected Rossby-wave signal] --> M[Mixed sea-surface-height input]
+    I[Synthetic internal waves] --> M
+    M --> N[Convolutional autoencoder]
+    N --> R[Reconstructed Rossby component]
+    A --> T[Training target]
+    T --> N
 ```
 
-Model inputs combine Rossby and synthetic internal-wave signals; targets contain the Rossby component. The canonical derived datasets contain **117 training sets and 59 testing sets**, each with **277 swath points over 20 sampled days**.
+The canonical derived datasets contain **117 training sets and 59 validation
+sets**, each with **277 swath points over 20 sampled days**. The historical files
+name the validation split `testing`; it was monitored during training and is not
+an independent final test.
 
-| Directory | Contents |
-| --- | --- |
-| `notebooks/preprocessing/` | Eight notebooks for wave fitting, swath construction, synthesis, and projection |
-| `notebooks/modeling/` | Main swath autoencoder experiment |
-| `notebooks/experiments/` | Spatial, dense-decoder, tanh-decoder, and adversarial variants |
-| `src/` | Rossby-wave numerical routines and portable data paths |
-| `data/` | Dataset and checkpoint manifests with SHA-256 checksums |
+The maintained repository starts from these derived NetCDF arrays. Original
+upstream preprocessing is described in [reproduction notes](docs/reproduction.md),
+and requires separately sourced physical-model code and satellite inputs.
 
-## Run the model workflow
+## Run
 
-The datasets and checkpoints are not distributed in this repository. With access to the original data, restore `new2_ssh_training_data.nc` and `new2_ssh_testing_data.nc` using the [artifact manifest](data/artifact-manifest.json).
-
-Create and activate a separate Python environment, then run:
+Use Python 3.12 in a separate environment:
 
 ```bash
 python -m pip install -r requirements-models.txt
-jupyter lab
+python scripts/check_repository.py
+python -m unittest discover -s tests -v
 ```
 
-Open [05_train_swath_autoencoder.ipynb](notebooks/modeling/05_train_swath_autoencoder.ipynb), review the input shapes and epoch count, and set `ALLOW_TRAINING = True` to train. Inputs are read from `data/`; generated results go to `artifacts/` and are protected against silent overwrite.
-
-The archived checkpoints record Keras 2.6.0. The dependency list is a starting point for environment setup, not an exact historical lockfile. Training and checkpoint compatibility with current TensorFlow/Keras have not been verified.
-
-## Reproduction and evaluation
-
-The complete preprocessing route requires upstream files and the `internal_waves` module that are not included. See [reproduction instructions](docs/reproduction.md) for notebook order and input requirements.
-
-The historical training code uses the arrays named `testing` for validation. Results from those arrays are therefore not an independent final test. The experiments also use overlapping windows and require a separate temporal or geographic holdout for generalization assessment. See [limitations](docs/limitations.md).
-
-## Offline validation
+Run the complete main notebook on small synthetic data, including one training
+epoch, model export and reloaded inference:
 
 ```bash
-python scripts/check_repository.py
+python scripts/check_model_notebooks.py --notebook 05_train_swath_autoencoder
 ```
 
-The checker validates notebook schemas and Python syntax, tests path and overwrite protection, and runs a small regularized-inversion check. It does not execute training or the full physical preprocessing workflow.
+This check does not require research data and does not measure scientific
+performance. To use the original derived inputs, restore the two canonical
+NetCDF files from an authorized archive, then open the notebook:
 
-## Attribution and data rights
+```bash
+python scripts/restore_artifacts.py --source /path/to/source-archive --only canonical
+jupyter lab notebooks/modeling/05_train_swath_autoencoder.ipynb
+```
 
-Scientific helpers and satellite products retain their original attribution and rights. Per-file authorship and a project-wide license are not fully documented in the source collection. Raw satellite products, derived datasets, and checkpoints are not redistributed here. See [NOTICE.md](NOTICE.md) and [source notes](docs/curation.md).
+Review the 30,000-epoch configuration and set `ALLOW_TRAINING = True` before
+training. `OCEAN_DATA_DIR` selects the input directory and `OCEAN_ARTIFACT_DIR`
+selects the output directory. Existing outputs are protected against replacement.
+
+## Repository contents
+
+| Directory | Contents |
+| --- | --- |
+| `notebooks/modeling/` | Main swath reconstruction experiment |
+| `notebooks/experiments/` | Seven maintained spatial, flattened and dense-decoder variants |
+| `src/` | Rossby-wave numerical routines and portable file access |
+| `scripts/` | Notebook checks and checksum-verified data restoration |
+| `tests/` | Numerical regressions for masking, mode dimensions and inversion |
+| `data/` | Input descriptions and artifact checksums |
+| `docs/` | Reproduction, source provenance and evaluation limits |
+
+## Evaluation and provenance
+
+The research notebooks preserve their original architectures and validation
+protocols. Overlapping windows and repeated validation use require a separate
+temporal or geographic holdout before making generalization claims. No new
+scientific performance result is claimed by the maintenance checks.
+
+Original preprocessing and two unresolved historical model variants are preserved
+in a separate local archive rather than presented as runnable examples. See
+[maintenance notes](docs/curation.md) and [limitations](docs/limitations.md).
+
+Satellite products and scientific helpers retain their original attribution and
+rights. Raw products, derived datasets and historical checkpoints are not
+redistributed here. See [NOTICE.md](NOTICE.md).

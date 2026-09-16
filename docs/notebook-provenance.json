@@ -3,138 +3,157 @@
     "source_collection": "preprocessing",
     "source_file": "1. Extract rossby wave data(training).ipynb",
     "source_sha256": "2d59dda8ca9056d8cc7c13f9e309da43ec9cd92b2283cc418b7f78153d22cdc4",
-    "curated_path": "notebooks/preprocessing/01_fit_rossby_training.ipynb",
-    "original_cells_kept_only_in_local_archive": []
+    "original_cells_kept_only_in_local_archive": [],
+    "status": "preserved_in_local_archive",
+    "previous_public_path": "notebooks/preprocessing/01_fit_rossby_training.ipynb"
   },
   {
     "source_collection": "preprocessing",
     "source_file": "1. Extract rossby wave data(testing).ipynb",
     "source_sha256": "612b5b7156408c381decf66ba830bf03526e21b101915651406a58aa9d49260b",
-    "curated_path": "notebooks/preprocessing/01_fit_rossby_testing.ipynb",
-    "original_cells_kept_only_in_local_archive": []
+    "original_cells_kept_only_in_local_archive": [],
+    "status": "preserved_in_local_archive",
+    "previous_public_path": "notebooks/preprocessing/01_fit_rossby_testing.ipynb"
   },
   {
     "source_collection": "preprocessing",
     "source_file": "2. Save H_swath(training).ipynb",
     "source_sha256": "a722e1f527ae8304da12e61bee7f0f0313d15dc1f75dad10bd73b2a0aa6626d5",
-    "curated_path": "notebooks/preprocessing/02_build_swath_training.ipynb",
-    "original_cells_kept_only_in_local_archive": []
+    "original_cells_kept_only_in_local_archive": [],
+    "status": "preserved_in_local_archive",
+    "previous_public_path": "notebooks/preprocessing/02_build_swath_training.ipynb"
   },
   {
     "source_collection": "preprocessing",
     "source_file": "2. Save H_swath(testing).ipynb",
     "source_sha256": "6dbd76c9a5e079c39d3c4692bf4cba582617661a85c8e17a4cdfdc67fb642e72",
-    "curated_path": "notebooks/preprocessing/02_build_swath_testing.ipynb",
-    "original_cells_kept_only_in_local_archive": []
+    "original_cells_kept_only_in_local_archive": [],
+    "status": "preserved_in_local_archive",
+    "previous_public_path": "notebooks/preprocessing/02_build_swath_testing.ipynb"
   },
   {
     "source_collection": "preprocessing",
     "source_file": "3. Internal waves(training).ipynb",
     "source_sha256": "43df15d841c31b273d9b868665e58c2fa398d2205f8d844da7bd45a708246cf8",
-    "curated_path": "notebooks/preprocessing/03_generate_internal_training.ipynb",
-    "original_cells_kept_only_in_local_archive": []
+    "original_cells_kept_only_in_local_archive": [],
+    "status": "preserved_in_local_archive",
+    "previous_public_path": "notebooks/preprocessing/03_generate_internal_training.ipynb"
   },
   {
     "source_collection": "preprocessing",
     "source_file": "3. Internal waves(testing).ipynb",
     "source_sha256": "ef0c4c6e47d8d92d7410d5717a0f621082ec2d79b2e09cdf492f6751bacb8069",
-    "curated_path": "notebooks/preprocessing/03_generate_internal_testing.ipynb",
-    "original_cells_kept_only_in_local_archive": []
+    "original_cells_kept_only_in_local_archive": [],
+    "status": "preserved_in_local_archive",
+    "previous_public_path": "notebooks/preprocessing/03_generate_internal_testing.ipynb"
   },
   {
     "source_collection": "preprocessing",
     "source_file": "4. SSH projection data(training).ipynb",
     "source_sha256": "69e5f405ed03f98bc38fdbb3b322bc60fcfd45a3e3459d4da582ed6926fd32fe",
-    "curated_path": "notebooks/preprocessing/04_project_training.ipynb",
     "original_cells_kept_only_in_local_archive": [
       15,
       16,
       17,
       18
-    ]
+    ],
+    "status": "preserved_in_local_archive",
+    "previous_public_path": "notebooks/preprocessing/04_project_training.ipynb"
   },
   {
     "source_collection": "preprocessing",
     "source_file": "4. SSH projection data(testing).ipynb",
     "source_sha256": "2f808c4d65f0df106abbefd937004b9a52bc3032490153994767a68763f3492b",
-    "curated_path": "notebooks/preprocessing/04_project_testing.ipynb",
-    "original_cells_kept_only_in_local_archive": []
+    "original_cells_kept_only_in_local_archive": [],
+    "status": "preserved_in_local_archive",
+    "previous_public_path": "notebooks/preprocessing/04_project_testing.ipynb"
   },
   {
     "source_collection": "preprocessing",
     "source_file": "Training model-1D.ipynb",
     "source_sha256": "4807eeb0865ab5af5d606adc0e2a27a1b90fb77b7929ec6c040a27935f4f0ae3",
     "curated_path": "notebooks/modeling/05_train_swath_autoencoder.ipynb",
-    "original_cells_kept_only_in_local_archive": []
+    "original_cells_kept_only_in_local_archive": [],
+    "status": "maintained"
   },
   {
     "source_collection": "preprocessing",
     "source_file": "4. SSH projection data(testing)-2D.ipynb",
     "source_sha256": "bd53d2c17dbf71d4d102691ca060453c17e0142c531a5661fcdcb24e5f679d49",
-    "curated_path": "notebooks/experiments/spatial_testing_projection.ipynb",
-    "original_cells_kept_only_in_local_archive": []
+    "original_cells_kept_only_in_local_archive": [],
+    "status": "preserved_in_local_archive",
+    "previous_public_path": "notebooks/experiments/spatial_testing_projection.ipynb"
   },
   {
     "source_collection": "ucsd-ml",
     "source_file": "UCSD-1D.ipynb",
     "source_sha256": "c5f4e0e0f07ee324900fa4855ce02eb0b8b5e0a1b814ec68c91cdac7a7fccae0",
     "curated_path": "notebooks/experiments/small_dataset_flattened_autoencoder.ipynb",
-    "original_cells_kept_only_in_local_archive": []
+    "original_cells_kept_only_in_local_archive": [],
+    "status": "maintained"
   },
   {
     "source_collection": "ucsd-ml",
     "source_file": "UCSD.ipynb",
     "source_sha256": "a48b0df1a1207d4bfbd490f542e6bf6b92ce4f18cc5d4a7f91854b9e414af1ff",
     "curated_path": "notebooks/experiments/small_dataset_spatial_autoencoder.ipynb",
-    "original_cells_kept_only_in_local_archive": []
+    "original_cells_kept_only_in_local_archive": [],
+    "status": "maintained"
   },
   {
     "source_collection": "ucsd-ml",
     "source_file": "new UCSD-1D.ipynb",
     "source_sha256": "72c1a18bec1d24e521d78ca1830dd1426c1619606c93ecc5ef7a79aeffc7cf3c",
     "curated_path": "notebooks/experiments/expanded_flattened_autoencoder.ipynb",
-    "original_cells_kept_only_in_local_archive": []
+    "original_cells_kept_only_in_local_archive": [],
+    "status": "maintained"
   },
   {
     "source_collection": "ucsd-ml",
     "source_file": "new UCSD.ipynb",
     "source_sha256": "8ef8d19d2619a910042b774a69fc26cd44b10daa87cbd3bd1772808d65bac205",
-    "curated_path": "notebooks/experiments/expanded_spatial_autoencoder.ipynb",
-    "original_cells_kept_only_in_local_archive": []
+    "original_cells_kept_only_in_local_archive": [],
+    "status": "preserved_in_local_archive",
+    "previous_public_path": "notebooks/experiments/expanded_spatial_autoencoder.ipynb"
   },
   {
     "source_collection": "ucsd-ml",
     "source_file": "new2 UCSD.ipynb",
     "source_sha256": "2b007db0a8bf214bba1da7cc322d1ce90e7e6f05b784a14811004014483461cf",
     "curated_path": "notebooks/experiments/extended_spatial_autoencoder.ipynb",
-    "original_cells_kept_only_in_local_archive": []
+    "original_cells_kept_only_in_local_archive": [],
+    "status": "maintained"
   },
   {
     "source_collection": "ucsd-ml",
     "source_file": "new UCSD-1D-Try.ipynb",
     "source_sha256": "1a3807f5090a686adb6b22ea82dde2729e93e3611e201b4ad7953a75a4c480ad",
     "curated_path": "notebooks/experiments/tanh_autoencoder.ipynb",
-    "original_cells_kept_only_in_local_archive": []
+    "original_cells_kept_only_in_local_archive": [],
+    "status": "maintained"
   },
   {
     "source_collection": "ucsd-ml",
     "source_file": "new UCSD-1D-Try-Copy1.ipynb",
     "source_sha256": "e9878b04e2dde7c56a7208396a84c84d35701764fd7e7721df92c350aadd622f",
     "curated_path": "notebooks/experiments/tanh_autoencoder_variant.ipynb",
-    "original_cells_kept_only_in_local_archive": []
+    "original_cells_kept_only_in_local_archive": [],
+    "status": "maintained"
   },
   {
     "source_collection": "ucsd-ml",
     "source_file": "new UCSD-1D-CNN+Dense.ipynb",
     "source_sha256": "a768f77d1e25ba58eb5102176586ff1c0ae7d5d715a21438e2fc80a9b586a598",
     "curated_path": "notebooks/experiments/convolutional_dense_decoder.ipynb",
-    "original_cells_kept_only_in_local_archive": []
+    "original_cells_kept_only_in_local_archive": [],
+    "status": "maintained"
   },
   {
     "source_collection": "ucsd-ml",
     "source_file": "new UCSD-1D-GAN.ipynb",
     "source_sha256": "376ebb94d404efbca0d7c6be67c35dfef7db65d55da055fd819d8e8d8379a21c",
-    "curated_path": "notebooks/experiments/adversarial_reconstruction.ipynb",
-    "original_cells_kept_only_in_local_archive": []
+    "original_cells_kept_only_in_local_archive": [],
+    "status": "preserved_in_local_archive",
+    "previous_public_path": "notebooks/experiments/adversarial_reconstruction.ipynb"
   }
 ]

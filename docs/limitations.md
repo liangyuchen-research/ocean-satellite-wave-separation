@@ -2,42 +2,36 @@
 
 ## Evaluation
 
-The notebook sources repeatedly pass arrays named `testing` as Keras validation
-data during training. Training curves or final values from those arrays do not
-constitute an independent final test. The 1% or 10% random split created within
-some notebooks is not consistently used by their training call.
+The sources pass arrays named `testing` as Keras validation data during training.
+Those curves are not an independent final test. The 1% or 10% random split
+within notebooks is not consistently used by their training call.
 
-Windows in the preprocessing notebooks overlap, and training/testing synthetic
-internal-wave generators use the same seed value. Temporal independence and
-the relationship between generated realizations require a separate audit before
-claiming out-of-sample performance. No model-ranking or accuracy claim is made
-from the historical output logs.
+Preprocessing windows overlap, and training/testing internal-wave generators use
+the same seed. A separate temporal or geographic holdout is needed to assess
+generalization. No accuracy or model-ranking claim is made from historical logs.
 
 ## Scientific scope
 
-- The Rossby component is fit from AVISO SSH anomalies and projected onto sample
-  SWOT track coordinates; synthetic internal-wave fields supply contamination.
-- Source projection arrays assume particular track counts, sampling indices,
-  dimensions and dates. They are research configurations, not arbitrary-domain APIs.
-- Rossby-mode routines state that only one vertical mode was tested.
-- Unit conversions, regularization settings and explicit matrix inversions retain
-  the original implementation and have not received a scientific validation audit.
-- The original `skill_matrix` includes a `value != np.nan` condition, which does
-  not by itself reject NaNs. Its behavior was preserved, not silently redefined.
-- Several model variants omit hidden-layer activations or have output activations
-  that constrain the range. Their architectures are preserved as experiments.
+- The Rossby component is fit from AVISO anomalies and projected onto sampled
+  SWOT coordinates. Synthetic internal-wave fields supply contamination.
+- Projection arrays assume specific track counts, dates, dimensions and units.
+- Unit conversions and regularization values remain those of the source.
+- Missing/invalid observations are now excluded consistently, matrix columns
+  include all requested vertical modes, and regularized inversion uses a linear
+  solve rather than explicitly forming an inverse. Small tests cover these
+  corrections; they are not a physical validation of the Rossby model.
+- Several variants omit hidden activations or constrain output range. Their
+  architectures remain research experiments, not recommended production models.
 
-## Reproducibility
+## Runtime and source availability
 
-The missing `internal_waves` module and upstream fields prevent a complete fresh
-preprocessing run. Some legacy notebooks depend on specific TensorFlow/Keras
-behavior and implicitly handled channel dimensions. The archived HDF5 models
-record Keras 2.6.0, but there is no exact full environment lockfile.
+Maintained notebooks use explicit float32 channel axes and the `.keras` export
+format. The original Keras 2.6 HDF5 checkpoints have not been promoted to verified
+model releases. Full historical training has not been repeated.
 
-The primary inference export's dimension names were corrected to match its
-transposed array order (`sets`, `days`, `points`) and its output filename was
-changed so it cannot replace the input dataset. These maintenance changes do
-not establish model performance.
-
-Only lightweight syntax, schema, path-protection and small numerical checks were
-run. No training, expensive projection or full satellite-data analysis was executed.
+The upstream `internal_waves` module and three input fields were not located.
+Raw preprocessing is therefore preserved in the local archive, outside the
+maintained model route. An expanded spatial notebook with incompatible Conv2D
+inputs, and an adversarial notebook with unresolved discriminator training logic,
+are also archived rather than presented as working model examples. All original
+files and the previous public notebook versions remain preserved.
