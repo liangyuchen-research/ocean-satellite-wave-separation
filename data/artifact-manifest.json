@@ -1,0 +1,138 @@
+[
+  {
+    "relative": "autoencoder_model_1.h5",
+    "bytes": 3296000,
+    "sha256": "c89e4ff87d07f5f87289cedb1bf87d6e1c6e1c76bb730c016312ab2cada4948f",
+    "format": "HDF5",
+    "restore_to": "data/autoencoder_model_1.h5",
+    "redistribution_status": "not included; source rights require verification"
+  },
+  {
+    "relative": "aviso_msla_ccs_1d.nc",
+    "bytes": 247428112,
+    "sha256": "e53eb9199cd7325c2a91551bbb3cbbbbd7a9e92ea7a3d1e88674111bd9d96fe3",
+    "format": "HDF5",
+    "restore_to": "data/aviso_msla_ccs_1d.nc",
+    "redistribution_status": "not included; source rights require verification"
+  },
+  {
+    "relative": "gan.h5",
+    "bytes": 3404816,
+    "sha256": "72b7d92633f2d08fc878aa98655d20bfe037cf9ef550d956dd6ec4027a0e5aa6",
+    "format": "HDF5",
+    "restore_to": "data/gan.h5",
+    "redistribution_status": "not included; source rights require verification"
+  },
+  {
+    "relative": "new2_ssh_testing_data.nc",
+    "bytes": 5237952,
+    "sha256": "1473e4a5025354ebb50656f3ef23add35c4688d2cb4197bbe29b2081cf9f8b51",
+    "format": "HDF5",
+    "restore_to": "data/new2_ssh_testing_data.nc",
+    "redistribution_status": "not included; source rights require verification"
+  },
+  {
+    "relative": "new2_ssh_testing_data2D.nc",
+    "bytes": 5143144,
+    "sha256": "1a3b2d505a1587b30215264d2e24ffc56b8b0de191624400f677cddfedc72f3a",
+    "format": "HDF5",
+    "restore_to": "data/new2_ssh_testing_data2D.nc",
+    "redistribution_status": "not included; source rights require verification"
+  },
+  {
+    "relative": "new2_ssh_training_data.nc",
+    "bytes": 10379072,
+    "sha256": "382cd70d12a89382da8216386c6a547e183bae4c01965ae0c3269aa45d171889",
+    "format": "HDF5",
+    "restore_to": "data/new2_ssh_training_data.nc",
+    "redistribution_status": "not included; source rights require verification"
+  },
+  {
+    "relative": "new2_ssh_training_data2D.nc",
+    "bytes": 10191466,
+    "sha256": "bcc0e01622818056ff03be9284c0824ddeaa1f2630385e71329b522a09d2f9e8",
+    "format": "HDF5",
+    "restore_to": "data/new2_ssh_training_data2D.nc",
+    "redistribution_status": "not included; source rights require verification"
+  },
+  {
+    "relative": "new_ssh_testing_data.nc",
+    "bytes": 1780992,
+    "sha256": "532f5d465b80b047916cb6ecc926ff8e9247f02c4c9419ad9c6c0940ea920710",
+    "format": "HDF5",
+    "restore_to": "data/new_ssh_testing_data.nc",
+    "redistribution_status": "not included; source rights require verification"
+  },
+  {
+    "relative": "new_ssh_testing_data2D.nc",
+    "bytes": 1748584,
+    "sha256": "24ab035fe205402cabe8897c6ee8ce6b5a782f434a0ebe83fa8e5f3c8e489d35",
+    "format": "HDF5",
+    "restore_to": "data/new_ssh_testing_data2D.nc",
+    "redistribution_status": "not included; source rights require verification"
+  },
+  {
+    "relative": "new_ssh_training_data.nc",
+    "bytes": 3509472,
+    "sha256": "487f1267daf2f02b30813c67c40e45ccbedead92e20ac969d5841aa228660aad",
+    "format": "HDF5",
+    "restore_to": "data/new_ssh_training_data.nc",
+    "redistribution_status": "not included; source rights require verification"
+  },
+  {
+    "relative": "new_ssh_training_data2D.nc",
+    "bytes": 3445866,
+    "sha256": "66fb00aa82a7028ec808caee5ced8856e529775136fb8afc86070a47f714ed3a",
+    "format": "HDF5",
+    "restore_to": "data/new_ssh_training_data2D.nc",
+    "redistribution_status": "not included; source rights require verification"
+  },
+  {
+    "relative": "ssh_testing_data.nc",
+    "bytes": 274112,
+    "sha256": "4942dca63ec90ce0bc82cefff8c6ab5669420efc5b6e2b7676dc60cec7637e43",
+    "format": "HDF5",
+    "restore_to": "data/ssh_testing_data.nc",
+    "redistribution_status": "not included; source rights require verification"
+  },
+  {
+    "relative": "ssh_testing_data2D.nc",
+    "bytes": 268904,
+    "sha256": "32ec3c9c1a15a8f6e3f41f73c130444fed8aa0ca36911854221565e2bc709d41",
+    "format": "HDF5",
+    "restore_to": "data/ssh_testing_data2D.nc",
+    "redistribution_status": "not included; source rights require verification"
+  },
+  {
+    "relative": "ssh_training_data.nc",
+    "bytes": 584352,
+    "sha256": "4bf20fa71a636712464422b1f0633a5a8935a6092242014f7dca7f24756c0ebb",
+    "format": "HDF5",
+    "restore_to": "data/ssh_training_data.nc",
+    "redistribution_status": "not included; source rights require verification"
+  },
+  {
+    "relative": "ssh_training_data2D.nc",
+    "bytes": 573546,
+    "sha256": "f538d05ae592e209f8473007266e0e26b8b706528bb896740e428ce1ca4b1e7e",
+    "format": "HDF5",
+    "restore_to": "data/ssh_training_data2D.nc",
+    "redistribution_status": "not included; source rights require verification"
+  },
+  {
+    "relative": "SWOT_L2_LR_SSH_Expert_474_013_20230329T081622_20230329T090516_PIB0_01.nc",
+    "bytes": 29358195,
+    "sha256": "d3755b568855006dca0331ca45fc8d77ee2d0548b84c1e0340cb7a8d57bcd253",
+    "format": "HDF5",
+    "restore_to": "data/SWOT_L2_LR_SSH_Expert_474_013_20230329T081622_20230329T090516_PIB0_01.nc",
+    "redistribution_status": "not included; source rights require verification"
+  },
+  {
+    "relative": "SWOT_L2_LR_SSH_Expert_474_026_20230329T191926_20230329T201032_PIB0_01.nc",
+    "bytes": 33299369,
+    "sha256": "16f92c94db358d622a95338bdd49cd2d540908d5ea46e7e132352b63202f3369",
+    "format": "HDF5",
+    "restore_to": "data/SWOT_L2_LR_SSH_Expert_474_026_20230329T191926_20230329T201032_PIB0_01.nc",
+    "redistribution_status": "not included; source rights require verification"
+  }
+]

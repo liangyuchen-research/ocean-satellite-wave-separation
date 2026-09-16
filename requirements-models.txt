@@ -1,0 +1,14 @@
+# Compatibility starting point, not a reproduced historical environment.
+# Archived model metadata records Keras 2.6.0; review version compatibility.
+tensorflow
+numpy
+scipy
+xarray
+h5py
+h5netcdf
+netCDF4
+matplotlib
+scikit-learn
+glob2
+jupyterlab
+nbformat
