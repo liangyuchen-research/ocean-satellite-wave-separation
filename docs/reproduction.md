@@ -44,8 +44,7 @@ outputs. The alternative spatial-testing projection is under `notebooks/experime
 
 ## Missing source dependencies
 
-The following referenced files were not found in the supplied folders or targeted
-broader local searches:
+The following source dependencies are required but are not included:
 
 - `internal_waves.py`, exposing `SpectralDomain`, `calc_gm_wavenumber_spectra`,
   `calc_gm_wavenumber_spectra_on_domain`, `make_synthetic_field`, and `abel_integral`.

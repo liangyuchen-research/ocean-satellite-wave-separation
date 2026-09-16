@@ -36,8 +36,8 @@ record Keras 2.6.0, but there is no exact full environment lockfile.
 
 The primary inference export's dimension names were corrected to match its
 transposed array order (`sets`, `days`, `points`) and its output filename was
-changed so it cannot replace the input dataset. These are documented curation
-changes, not evidence of newly validated model performance.
+changed so it cannot replace the input dataset. These maintenance changes do
+not establish model performance.
 
 Only lightweight syntax, schema, path-protection and small numerical checks were
 run. No training, expensive projection or full satellite-data analysis was executed.

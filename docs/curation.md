@@ -1,11 +1,11 @@
-# Curation and preservation
+# Source and maintenance notes
 
 All 56 original files from the two source collections, including checkpoints,
 NetCDF data, HDF5 models and notebook outputs, were copied unchanged into a local
 preservation archive. Every copy was verified against a SHA-256 manifest. The
-archive is separate from this GitHub candidate and contains about 444 MB.
+archive is separate from this repository and contains about 444 MB.
 
-## Changes in the curated copy
+## Repository changes
 
 - Renamed notebooks to English descriptions and grouped preprocessing, modeling
   and alternative experiments.
@@ -23,7 +23,7 @@ archive is separate from this GitHub candidate and contains about 444 MB.
   overwrite the training dataset with mislabeled variables; they are not part
   of the canonical preprocessing sequence.
 
-`notebook-provenance.json` maps every curated notebook to its original name and
+`notebook-provenance.json` maps each notebook to its original name and
 source hash. Near-duplicate `UCSD-1D-Copy1`, `UCSD-Copy1`, and `new2 UCSD-1D`
 notebooks remain in the local archive. The unrelated MNIST practice notebook
 `Untitled.ipynb` also remains archived rather than being presented as ocean research.

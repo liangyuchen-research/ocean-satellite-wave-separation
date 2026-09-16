@@ -1,14 +1,10 @@
 # Ocean Satellite Wave Separation
 
-Research notebooks for separating Rossby-wave structure from synthetic internal-wave
-contamination in sea-surface-height data sampled along SWOT satellite swaths.
-The workflow combines a physical wave representation, spatial projection and
-TensorFlow/Keras reconstruction models.
+Deep learning experiments for separating Rossby-wave structure from synthetic internal-wave contamination in sea-surface-height data sampled along SWOT satellite swaths. The workflow combines physical wave modeling, spatial projection, and convolutional reconstruction.
 
-Research context: an international summer research internship at Scripps Institution
-of Oceanography, UC San Diego, with Prof. Sarah Gille, as described in the supplied
-CV. The source collection contains preprocessing notebooks, an existing Rossby-wave
-helper module, several model experiments and local NetCDF/HDF5 artifacts.
+Developed during an international summer research internship at Scripps Institution of Oceanography, UC San Diego, with Prof. Sarah Gille.
+
+**Technologies:** TensorFlow/Keras, NumPy, SciPy, xarray, NetCDF, Matplotlib.
 
 ## Approach
 
@@ -24,64 +20,45 @@ flowchart LR
     N --> R[Estimated Rossby component]
 ```
 
-The target arrays contain the Rossby component; inputs combine Rossby and synthetic
-internal-wave signals. This is a controlled reconstruction experiment rather than
-a claim that ground-truth wave separation is available for all observed SWOT data.
-Although some original file names say `1D`, the corresponding networks use `Conv2D`
-over time and flattened swath-point axes.
+Model inputs combine Rossby and synthetic internal-wave signals; targets contain the Rossby component. The canonical derived datasets contain **117 training sets and 59 testing sets**, each with **277 swath points over 20 sampled days**.
 
-## What is included
+| Directory | Contents |
+| --- | --- |
+| `notebooks/preprocessing/` | Eight notebooks for wave fitting, swath construction, synthesis, and projection |
+| `notebooks/modeling/` | Main swath autoencoder experiment |
+| `notebooks/experiments/` | Spatial, dense-decoder, tanh-decoder, and adversarial variants |
+| `src/` | Rossby-wave numerical routines and portable data paths |
+| `data/` | Dataset and checkpoint manifests with SHA-256 checksums |
 
-- Eight staged training/testing preprocessing notebooks.
-- A primary model notebook with matching 20-day swath data structure.
-- Alternative spatial, dense-decoder, tanh-decoder and adversarial experiments.
-- The original numerical helper, portable file-access utilities, and lightweight checks.
-- Dataset and checkpoint manifests with SHA-256 hashes, without committing large data.
+## Run the model workflow
 
-The canonical archived datasets contain **117 training sets and 59 testing sets**,
-each with **277 swath points over 20 sampled days**. These shapes were checked
-directly in the NetCDF files. No unverified accuracy or denoising-performance
-percentage is claimed.
+The datasets and checkpoints are not distributed in this repository. With access to the original data, restore `new2_ssh_training_data.nc` and `new2_ssh_testing_data.nc` using the [artifact manifest](data/artifact-manifest.json).
 
-## Start here
-
-For the model workflow, restore the two `new2_ssh_*_data.nc` files listed in
-[data/artifact-manifest.json](data/artifact-manifest.json), install the model
-dependencies, then open
-[05_train_swath_autoencoder.ipynb](notebooks/modeling/05_train_swath_autoencoder.ipynb).
-Review the epoch count and set `ALLOW_TRAINING = True` only when ready to train.
+Create and activate a separate Python environment, then run:
 
 ```bash
 python -m pip install -r requirements-models.txt
 jupyter lab
 ```
 
-Generated files go to `artifacts/`; inputs remain in `data/`. Existing generated
-files are protected against silent overwrite. Model training has not been rerun
-during preparation. The original checkpoints record Keras 2.6.0; exact compatibility
-with newer TensorFlow/Keras releases has not been established.
+Open [05_train_swath_autoencoder.ipynb](notebooks/modeling/05_train_swath_autoencoder.ipynb), review the input shapes and epoch count, and set `ALLOW_TRAINING = True` to train. Inputs are read from `data/`; generated results go to `artifacts/` and are protected against silent overwrite.
 
-Full raw-data reproduction remains incomplete because several upstream files and
-the `internal_waves` module were absent. The available AVISO NetCDF has a different
-layout and time span from the missing MATLAB input and is not substituted blindly.
-See [reproduction instructions](docs/reproduction.md) for the execution order and
-missing inputs, and [limitations](docs/limitations.md) for evaluation details.
+The archived checkpoints record Keras 2.6.0. The dependency list is a starting point for environment setup, not an exact historical lockfile. Training and checkpoint compatibility with current TensorFlow/Keras have not been verified.
 
-## Validation
+## Reproduction and evaluation
+
+The complete preprocessing route requires upstream files and the `internal_waves` module that are not included. See [reproduction instructions](docs/reproduction.md) for notebook order and input requirements.
+
+The historical training code uses the arrays named `testing` for validation. Results from those arrays are therefore not an independent final test. The experiments also use overlapping windows and require a separate temporal or geographic holdout for generalization assessment. See [limitations](docs/limitations.md).
+
+## Offline validation
 
 ```bash
 python scripts/check_repository.py
 ```
 
-The lightweight checker compiles Python cells, validates notebook schemas when
-`nbformat` is installed, checks portable path protection and performs a small
-numerical inversion check when NumPy is installed. It does not execute training,
-download datasets or rebuild the physical preprocessing pipeline.
+The checker validates notebook schemas and Python syntax, tests path and overwrite protection, and runs a small regularized-inversion check. It does not execute training or the full physical preprocessing workflow.
 
 ## Attribution and data rights
 
-The supplied notebooks do not fully resolve per-file authorship or include a
-project license. Original scientific helpers are retained with provenance and
-no assertion of sole authorship. See [NOTICE.md](NOTICE.md). Satellite products,
-derived datasets and checkpoint files remain local until their redistribution
-status is established.
+Scientific helpers and satellite products retain their original attribution and rights. Per-file authorship and a project-wide license are not fully documented in the source collection. Raw satellite products, derived datasets, and checkpoints are not redistributed here. See [NOTICE.md](NOTICE.md) and [source notes](docs/curation.md).
